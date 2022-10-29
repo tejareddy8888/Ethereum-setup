@@ -1,0 +1,3 @@
+[submodule "ethereum-genesis-generator"]
+	path = ethereum-genesis-generator
+	url = git@github.com:ethpandaops/ethereum-genesis-generator.git
