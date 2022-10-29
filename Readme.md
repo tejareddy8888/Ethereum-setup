@@ -2,6 +2,8 @@
 
 This leverages the existing documents and build an Ethereum Private Network.
 
+We aare using https://github.com/flashbots/mev-boost/blob/new-release-check/docs/geth-pos-privnet.md as reference every place.
+
 There are multiple combinations of setting this up, I will be providing both 
 
 1. Geth(Execution)-lighthouse(Consensus) (Easy Setup)
