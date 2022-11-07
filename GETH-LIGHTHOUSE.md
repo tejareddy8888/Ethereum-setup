@@ -105,7 +105,7 @@ where `<address>` is the public key of the wallet you created in step
 
 ### Create the Consensus Layer (CL)
 
-The scripts for setting up the CL can be seen at [`scripts/local_testnet`](./scripts/local_testnet/).
+The environment variables for setting up the CL can be seen at [`vars.env`](./vars.env).
 
 We use the [Lighthouse](https://github.com/sigp/lighthouse) and follow the steps as below.
 
