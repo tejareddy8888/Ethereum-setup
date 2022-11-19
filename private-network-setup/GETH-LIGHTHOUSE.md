@@ -1,4 +1,4 @@
-## 
+# Private Network Setup Documentation 
 
 As most people use a VPS or EC2 with debian or BSD distribution. Most of the below installation adheres to Ubuntu and it is tested only on Ubuntu but not on any other OS.
 
