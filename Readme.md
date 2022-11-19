@@ -1,13 +1,8 @@
-## Ethereum Setup Docs
+## Ethereum Node Setup Documentation
 
-This leverages the existing documents and build an Ethereum Private Network.
+This documentation focuses on the setup of Ethereum Full Node and Local Private Networks setup.
 
-We aare using https://github.com/flashbots/mev-boost/blob/new-release-check/docs/geth-pos-privnet.md as reference every place.
+In future, expanded to used for validators setup or any different combination of the client setups with different hardware.
 
-There are multiple combinations of setting this up, I will be providing both 
-
-1. Geth(Execution)-lighthouse(Consensus) (Easy Setup)
-2. Erigon(Execution)-Prysm(Consensus) (Very Efficient for space and resource, also running an archival node)
-
-We will also add the blockscout explorer for the private network as this is helpful for 
+There is also submodule linking for the referenced git repository for consistency.
 

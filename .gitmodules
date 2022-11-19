@@ -1,3 +1,6 @@
 [submodule "ethereum-genesis-generator"]
 	path = ethereum-genesis-generator
 	url = git@github.com:ethpandaops/ethereum-genesis-generator.git
+[submodule "blockscout"]
+	path = blockscout
+	url = git@github.com:blockscout/blockscout.git
