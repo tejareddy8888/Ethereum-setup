@@ -58,7 +58,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ### Create the Execution Layer (EL)
 
 
-The genesis file used for the current setup can be seen at [`geth.json`](./geth.json).
+The genesis file used for the current setup can be seen at [`genesis.json`](./genesis.json).
 
 We use [Ethereum-genesis-generator](https://github.com/ethpandaops/ethereum-genesis-generator) and follow the steps as below.
 
@@ -79,22 +79,24 @@ docker run --rm -it -u $UID -v $PWD/data:/data -p 127.0.0.1:8000:8000 \
   -v $PWD/data/el/genesis-config.yaml:/config/el/genesis-config.yaml \
   ethpandaops/ethereum-genesis-generator:latest el
 ```
-4. copy file `geth.json` from `custom_config_data` folder and Check the genesis file `geth.json` - verify clique is not present.
+4. copy file `genesis.json` from `custom_config_data` folder and Check the genesis file `genesis.json` - verify clique is not present.
 There should not exist a key named clique in the JSON file, if so delete the corresponding JSON entry. Also, make sure that the variables from `values.env`, e.g. the CHAIN_ID, is properly set.
-In the example [`geth.json`](./geth.json) the CHAIN_ID = 4242.
+In the example [`genesis.json`](./genesis.json) the CHAIN_ID = 8888.
 
 5. override the `terminalTotalDifficulty` to `60000000` or some other value that is bigger than 0. Make sure that you make a mental note of this value so that we can reuse it when setting up the CL, in this case the Lighthouse.
 
-6. Generate a valid account using your favorite tool, take note of the address.  here are 3 options:
+6. initialize the geth with the genesis json file: `geth init --datdir ~/.ethereum/${folder-Name}/privnet/geth-node-1 genesis.json`
+
+7. Generate a valid account using your favorite tool, take note of the address.  here are 3 options:
     1. `ethkey generate` + geth’s —nodekey
     2. geth console + eth.newAccount
     3. create a new address in something like metamask.
    
-7. Now, copy the private key inside a geth console session (`geth --datadir ~/.ethereum/${folder-Name}/privnet/geth-node-1 console`) and then run `web3.personal.importRawKey("<Private Key>","<Password>")`
+8. Now, copy the private key inside a geth console session (`geth --datadir ~/.ethereum/${folder-Name}/privnet/geth-node-1 console`) and then run `web3.personal.importRawKey("<Private Key>","<Password>")`
 
-8. Check the node starts to mine and kill it quickly. You only have 100 blocks until fork is enabled and 400 blocks until node stops mining
+9. Check the node starts to mine and kill it quickly. You only have 100 blocks until fork is enabled and 400 blocks until node stops mining
 ```bash 
-geth --datadir ~/.ethereum/local-testnet/testnet/geth-node-1 --networkid 4242 --http --http.port 8545 --http.api \
+geth --datadir ~/.ethereum/local-testnet/testnet/geth-node-1 --networkid 8888 --http --http.port 8545 --http.api \
 personal,eth,net,web3,engine,debug --discovery.dns "" --port 30303 --mine --miner.etherbase=<address> --miner.threads 1 \
 --miner.gaslimit 1000000000 --authrpc.jwtsecret ~/.ethereum/local-testnet/testnet/geth-node-1/geth/jwtsecret --authrpc.addr localhost \
 --authrpc.port 8551 --authrpc.vhosts localhost --unlock "<address>" --password <(echo "<password>") \
@@ -138,6 +140,7 @@ git clone git@github.com:sigp/lighthouse.git
 
 3. install lighthouse and lcli:
     1. make
+      - in this process you may encounter some compiling issues from rust, follow the instructions to solve it (e.g. adding `#![recursion_limit="256"]` to the source code)
     2. make install-lcli  
 
 
