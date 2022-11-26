@@ -28,7 +28,10 @@ openssl rand -hex 32 > jwtsecret
 We are trying to use goerli with snap sync mode in this you can choose to differ
 
 ```sh
-geth --goerli     --datadir "~/.ethereum"     --http --http.api="personal,eth,net,web3,engine,debug"     --ws --ws.api="personal,eth,net,web3,engine,debug"    --authrpc.addr="localhost" --authrpc.jwtsecret=jwtsecret --maxpeers=30
+geth --goerli  --datadir "/home/ubuntu/.ethereum" \
+--http --http.port 8545 --http.api personal,eth,net,web3,engine,debug,txpool  --http.addr 0.0.0.0 --http.vhosts "*" --http.corsdomain "*" \
+--ws --ws.addr 0.0.0.0 --ws.port 8546 --ws.origins "*" \
+--authrpc.addr="localhost" --authrpc.jwtsecret="/home/ubuntu/jwtsecret" --maxpeers=30
 ```
 
 

@@ -1,4 +1,4 @@
-# Private Network Setup Documentation 
+## 
 
 As most people use a VPS or EC2 with debian or BSD distribution. Most of the below installation adheres to Ubuntu and it is tested only on Ubuntu but not on any other OS.
 
@@ -171,7 +171,7 @@ To Confirm installation of GETH, The above commands install the core Geth softwa
 ### Create the Execution Layer (EL)
 
 
-The genesis file used for the current setup can be seen at [`genesis.json`](./genesis.json).
+The genesis file used for the current setup can be seen at [`geth.json`](./geth.json).
 
 We use [Ethereum-genesis-generator](https://github.com/ethpandaops/ethereum-genesis-generator) and follow the steps as below.
 
@@ -190,8 +190,9 @@ cp -r config-example data
 ```bash
 docker run --rm -it -u $UID -v $PWD/data:/data -p 127.0.0.1:8000:8000   -v $PWD/config/el/genesis-config.yaml:/config/el/genesis-config.yaml  -v $PWD/config/values.env:/config/values.env ethpandaops/ethereum-genesis-generator:latest el
 ```
-4. copy file `genesis.json` from `custom_config_data` folder and Check the genesis file `genesis.json` - verify clique is not present.
+4. copy file `geth.json` from `custom_config_data` folder and Check the genesis file `geth.json` - verify clique is not present.
 There should not exist a key named clique in the JSON file, if so delete the corresponding JSON entry. Also, make sure that the variables from `values.env`, e.g. the CHAIN_ID, is properly set.
+
 In the example [`genesis.json`](./genesis.json) the CHAIN_ID = 8888.
 
 5. override the `terminalTotalDifficulty` to `60000000` or some other value that is bigger than 0. Make sure that you make a mental note of this value so that we can reuse it when setting up the CL, in this case the Lighthouse.
@@ -204,9 +205,9 @@ In the example [`genesis.json`](./genesis.json) the CHAIN_ID = 8888.
     3. create a new address in something like metamask.
     4. `geth --datadir ~/.ethereum/${folder-Name}/privnet/geth-node-1  account import ${filename which contains key}` , Delete the file with the key after importing
    
-8. Now, copy the private key inside a geth console session (`geth --datadir ~/.ethereum/${folder-Name}/privnet/geth-node-1 console`) and then run `web3.personal.importRawKey("<Private Key>","<Password>")`
+7. Now, copy the private key inside a geth console session (`geth --datadir ~/.ethereum/${folder-Name}/privnet/geth-node-1 console`) and then run `web3.personal.importRawKey("<Private Key>","<Password>")`
 
-9. Check the node starts to mine and kill it quickly. You only have 100 blocks until fork is enabled and 400 blocks until node stops mining
+8. Check the node starts to mine and kill it quickly. You only have 100 blocks until fork is enabled and 400 blocks until node stops mining
 ```bash 
 geth --datadir /home/ubuntu/.ethereum/UZHETHPOS \
 --networkid 8888 \
