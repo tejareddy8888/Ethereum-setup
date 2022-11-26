@@ -2,6 +2,117 @@
 
 As most people use a VPS or EC2 with debian or BSD distribution. Most of the below installation adheres to Ubuntu and it is tested only on Ubuntu but not on any other OS.
 
+## [Optional] Security Requirements
+
+
+### Enable Automatic Security Updates
+
+Operating System vendors routinely publish updates and security fixes, so it is important that you keep your system up to date with the latest patches.
+The easiest way to do this is to enable automatic updates.
+
+Run the following commands on your node machine:
+
+```shell
+sudo apt update
+sudo apt install -y unattended-upgrades update-notifier-common
+```
+
+You can change the auto-update settings by editing `/etc/apt/apt.conf.d/20auto-upgrades`:
+
+```shell
+sudo nano /etc/apt/apt.conf.d/20auto-upgrades
+```
+
+This is an example of reasonable auto-update settings:
+
+```shell
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Unattended-Upgrade "1";
+APT::Periodic::AutocleanInterval "7";
+Unattended-Upgrade::Remove-Unused-Dependencies "true";
+Unattended-Upgrade::Remove-New-Unused-Dependencies "true";
+
+# This is the most important choice: auto-reboot.
+# This should be fine since all services auto-starts on reboot.
+Unattended-Upgrade::Automatic-Reboot "true";
+Unattended-Upgrade::Automatic-Reboot-Time "02:00";
+```
+
+After, make sure to load the new settings:
+
+```shell
+sudo systemctl restart unattended-upgrades
+```
+
+### Protect from DDOS
+Protecting yourselves from DDOS attacks DDoS attacks and brute-force connection attempts, you can install `fail2ban`
+
+```shell
+sudo apt install -y fail2ban
+```
+Next, open `/etc/fail2ban/jail.d/ssh.local`:
+
+```shell
+sudo nano /etc/fail2ban/jail.d/ssh.local
+```
+
+Add the following contents to it:
+
+```bash
+[sshd]
+enabled = true
+banaction = ufw
+port = 22
+filter = sshd
+logpath = %(sshd_log)s
+maxretry = 5
+```
+
+You can change the `maxretry` setting, which is the number of attempts it will allow before locking the offending address out.
+
+Once you're done, save and exit with `Ctrl+O` and `Enter`, then `Ctrl+X`.
+
+Finally, restart the service:
+
+```shell
+sudo systemctl restart fail2ban
+```
+
+
+### Reverse Proxy Setup 
+```bash
+sudo apt install curl gnupg2 ca-certificates lsb-release ubuntu-keyring
+```
+
+Download nginx signing key 
+
+```bash
+curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
+    | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
+```
+
+To set up the apt repository for stable nginx packages, run the following command:
+```bash
+echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
+http://nginx.org/packages/ubuntu `lsb_release -cs` nginx" \
+    | sudo tee /etc/apt/sources.list.d/nginx.list
+```
+
+To install nginx, run the following commands:
+
+```bash
+    sudo apt update
+    sudo apt install nginx
+```
+
+Next, open `/etc/nginx/nginx.conf`:
+
+add below for reverse proxy
+
+```bash
+
+```
+
 ## System Requirements
 
 ### Install Dependencies
@@ -19,6 +130,19 @@ sudo apt-get install -y \
   pkg-config \
   librust-openssl-dev
 ```
+
+### Install Docker
+```
+sudo snap install docker
+```
+Follow the post-installation steps: https://docs.docker.com/engine/install/linux-postinstall/
+
+and also add 
+
+```
+sudo chmod 666 /var/run/docker.sock
+```
+
 
 ### Install Geth
 
@@ -42,18 +166,7 @@ sudo apt-get install ethereum
 To Confirm installation of GETH, The above commands install the core Geth software and the following developer tools: clef, devp2p, abigen, bootnode, evm, rlpdump and puppeth. The binaries for each of these tools are saved in `/usr/local/bin/` or `/usr/bin`. 
 
 
-### Install Rust
-
-We need to install Rust to create the executables for Lighthouse.  
-For Ubuntu-based distributions we can use the following command to install Rust from rustup:
-
-```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-```
-
-
 ## Procedure
-
 
 ### Create the Execution Layer (EL)
 
@@ -75,9 +188,7 @@ cp -r config-example data
 
 3. edit the values in the `data/el/genesis-config.yaml` , changes the values manually or else the values from `values.env` overrides them.
 ```bash
-docker run --rm -it -u $UID -v $PWD/data:/data -p 127.0.0.1:8000:8000 \
-  -v $PWD/data/el/genesis-config.yaml:/config/el/genesis-config.yaml \
-  ethpandaops/ethereum-genesis-generator:latest el
+docker run --rm -it -u $UID -v $PWD/data:/data -p 127.0.0.1:8000:8000   -v $PWD/config/el/genesis-config.yaml:/config/el/genesis-config.yaml  -v $PWD/config/values.env:/config/values.env ethpandaops/ethereum-genesis-generator:latest el
 ```
 4. copy file `genesis.json` from `custom_config_data` folder and Check the genesis file `genesis.json` - verify clique is not present.
 There should not exist a key named clique in the JSON file, if so delete the corresponding JSON entry. Also, make sure that the variables from `values.env`, e.g. the CHAIN_ID, is properly set.
@@ -85,27 +196,42 @@ In the example [`genesis.json`](./genesis.json) the CHAIN_ID = 8888.
 
 5. override the `terminalTotalDifficulty` to `60000000` or some other value that is bigger than 0. Make sure that you make a mental note of this value so that we can reuse it when setting up the CL, in this case the Lighthouse.
 
-6. initialize the geth with the genesis json file: `geth init --datdir ~/.ethereum/${folder-Name}/privnet/geth-node-1 genesis.json`
+6. initialize the geth with the genesis json file: `geth init --datadir ~/.ethereum/${folder-Name}/privnet/geth-node-1 genesis.json`
 
 7. Generate a valid account using your favorite tool, take note of the address.  here are 3 options:
     1. `ethkey generate` + geth’s —nodekey
     2. geth console + eth.newAccount
     3. create a new address in something like metamask.
+    4. `geth --datadir ~/.ethereum/${folder-Name}/privnet/geth-node-1  account import ${filename which contains key}` , Delete the file with the key after importing
    
 8. Now, copy the private key inside a geth console session (`geth --datadir ~/.ethereum/${folder-Name}/privnet/geth-node-1 console`) and then run `web3.personal.importRawKey("<Private Key>","<Password>")`
 
 9. Check the node starts to mine and kill it quickly. You only have 100 blocks until fork is enabled and 400 blocks until node stops mining
 ```bash 
-geth --datadir ~/.ethereum/local-testnet/testnet/geth-node-1 --networkid 8888 --http --http.port 8545 --http.api \
-personal,eth,net,web3,engine,debug --discovery.dns "" --port 30303 --mine --miner.etherbase=<address> --miner.threads 1 \
---miner.gaslimit 1000000000 --authrpc.jwtsecret ~/.ethereum/local-testnet/testnet/geth-node-1/geth/jwtsecret --authrpc.addr localhost \
---authrpc.port 8551 --authrpc.vhosts localhost --unlock "<address>" --password <(echo "<password>") \
- --allow-insecure-unlock > ~/.ethereum/miner.log 2>&1
+geth --datadir /home/ubuntu/.ethereum/UZHETHPOS \
+--networkid 8888 \
+--http --http.port 8545 --http.api personal,eth,net,web3,engine,debug,txpool  --http.addr 0.0.0.0 --http.vhosts "*" --http.corsdomain "*" \
+--ws --ws.addr 0.0.0.0 --ws.port 8546 --ws.origins "*" \
+--discovery.dns "" \
+--port 30303 \
+--mine --miner.etherbase=<address> --miner.threads 1 --miner.gaslimit 1000000000 \
+--authrpc.jwtsecret /home/ubuntu/.ethereum/UZHETHPOS/geth/jwtsecret --authrpc.addr localhost --authrpc.port 8551 --authrpc.vhosts localhost \
+--unlock "<address>" --password <(echo "password") --allow-insecure-unlock \
+--syncmode "full" --gcmode "archive" >  ~/.ethereum/miner.log 2>&1
 ```
 where `<address>` is the public key of the wallet you created in step
 
 
 ### Create the Consensus Layer (CL)
+
+### Install Rust
+
+We need to install Rust to create the executables for Lighthouse.  
+For Ubuntu-based distributions we can use the following command to install Rust from rustup:
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
 
 The environment variables for setting up the CL can be seen at [`vars.env`](./vars.env).
 
@@ -139,9 +265,9 @@ git clone git@github.com:sigp/lighthouse.git
         1. Remove/comment ganache [`https://github.com/sigp/lighthouse/blob/stable/scripts/local_testnet/start_local_testnet.sh#L93`](https://github.com/sigp/lighthouse/blob/stable/scripts/local_testnet/start_local_testnet.sh#L93)
 
 3. install lighthouse and lcli:
-    1. make
+    1.Run  `make` in the root repository of the cloned lighthouse repo
       - in this process you may encounter some compiling issues from rust, follow the instructions to solve it (e.g. adding `#![recursion_limit="256"]` to the source code)
-    2. make install-lcli  
+    2. then run `make install-lcli`  
 
 
 ### Run and hope for the best
@@ -152,7 +278,87 @@ git clone git@github.com:sigp/lighthouse.git
 4. Once geth reaches `terminal_total_difficulty` it stops mining eth1 blocks (`60000000` ~12 min) and should be used by beacon nodes to create PoS payloads.
 
 
+## Automate the maintain by connecting the commands to system services
+
+First of all, stop both services and define `start_geth.sh` and `start_lighthouse.sh` as given in the files 
+
+cd /etc/systemd/system
+
+Create a file named geth.service and include the following:
+
+```service
+[Unit]
+Description=Go Ethereum Client
+After=network.target
+Wants=network.target
+
+[Service]
+User=ubuntu
+Group=ubuntu
+Type=simple
+Restart=always
+RestartSec=5
+ExecStart=${PATH}/start_geth.sh
+
+[Install]
+WantedBy=default.target
+```
+
+Create a file named lighthouse.service and include the following:
+```service
+[Unit]
+Description=Lighthouse Client
+After=network.target
+Wants=network.target
+
+[Service]
+User=ubuntu
+Group=ubuntu
+Type=simple
+Restart=always
+RestartSec=5
+ExecStart=${PATH}/start_lighthouse.sh
+
+[Install]
+WantedBy=default.target
+```
+
+Reload the service files to include the new service.
+```
+sudo systemctl daemon-reload
+```
+
+Start the services
+```
+sudo systemctl start geth.service
+sudo systemctl start lighthouse.service
+```
+
+To check the status of the service
+```
+sudo systemctl status geth.service
+sudo systemctl status lighthouse.service
+```
+
+To check the logs of the service
+```
+sudo journalctl -fu geth.service
+sudo journalctl -fu lighthouse.service
+```
+
+To enable your service on every reboot
+```
+sudo systemctl enable geth.service
+sudo systemctl enable lighthouse.service
+```
+
+To disable your service on every reboot
+```
+sudo systemctl disable geth.service
+sudo systemctl disable lighthouse.service
+```
+
 #### Environment variables
 
 
-## Note: 
+## Note:
