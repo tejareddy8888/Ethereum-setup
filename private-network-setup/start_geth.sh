@@ -10,6 +10,4 @@ geth --datadir /home/ubuntu/.ethereum/UZHETH/local-testnet \
 --port 30303 \
 --mine --miner.etherbase=$address --miner.threads 1 --miner.gaslimit 1000000000 \
 --authrpc.jwtsecret /home/ubuntu/.ethereum/UZHETH/local-testnet/geth/jwtsecret --authrpc.addr localhost --authrpc.port 8551 --authrpc.vhosts localhost \
---unlock "$address" \
---password <(echo "test") --allow-insecure-unlock \
 --syncmode "full" --gcmode "archive"
