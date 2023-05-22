@@ -14,7 +14,7 @@ if [ -d "$lighthouse_path" ]; then
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
     cd $lighthouse_path
-
+    source "$HOME/.cargo/env"
     make
     echo "create lighthouse alias"
   fi
