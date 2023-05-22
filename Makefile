@@ -37,17 +37,17 @@ start-geth:
 	@chmod +x ${go_setup_file}
 	@${go_setup_file} || ([ $$? -eq 33 ] && exit 0) || exit 1
 
-.PHONY: start-lighthouse
-start-geth: 
+.PHONY: start-bootnode
+start-bootnode: 
 	@chmod +x ${go_setup_file}
 	@${go_setup_file} || ([ $$? -eq 33 ] && exit 0) || exit 1
 
-.PHONY: start-lighthouse
-start-geth: 
-	@chmod +x ${go_setup_file}
-	@${go_setup_file} || ([ $$? -eq 33 ] && exit 0) || exit 1
+# .PHONY: start-lighthouse
+# start-geth: 
+# 	@chmod +x ${go_setup_file}
+# 	@${go_setup_file} || ([ $$? -eq 33 ] && exit 0) || exit 1
 
-.PHONY: start-lighthouse
-start-geth: 
-	@chmod +x ${go_setup_file}
-	@${go_setup_file} || ([ $$? -eq 33 ] && exit 0) || exit 1
+# .PHONY: start-lighthouse
+# start-geth: 
+# 	@chmod +x ${go_setup_file}
+# 	@${go_setup_file} || ([ $$? -eq 33 ] && exit 0) || exit 1
