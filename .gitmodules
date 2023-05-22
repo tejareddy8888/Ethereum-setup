@@ -4,3 +4,10 @@
 [submodule "blockscout"]
 	path = blockscout
 	url = git@github.com:blockscout/blockscout.git
+[submodule "lighthouse"]
+	path = lighthouse
+	url = git@github.com:sigp/lighthouse.git
+	branch = unstable
+[submodule "go-ethereum"]
+	path = go-ethereum
+	url = git@github.com:ethereum/go-ethereum.git

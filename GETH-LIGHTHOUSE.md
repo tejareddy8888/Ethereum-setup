@@ -121,7 +121,7 @@ add below for reverse proxy
 sudo apt-get update
 sudo apt-get install -y \
   build-essential \
-  cmake \
+  cmake \c
   protobuf-compiler \
   libprotobuf-dev \
   libclang-dev \
@@ -135,7 +135,7 @@ sudo apt-get install -y \
 ```
 sudo snap install docker
 ```
-Follow the post-installation steps: https://docs.docker.com/engine/install/linux-postinstall/
+Follow the post-installation [steps](https://docs.docker.com/engine/install/linux-postinstall/)
 
 and also add 
 

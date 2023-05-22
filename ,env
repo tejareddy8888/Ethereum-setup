@@ -1,25 +1,25 @@
 # Base directories for the validator keys and secrets
-DATADIR=~/.lighthouse/local-testnet
+DATADIR=~/.lighthouse/UZHETHPOS
 
 # Directory for the eth2 config
-TESTNET_DIR=$DATADIR/testnet
+TESTNET_DIR=$DATADIR/private-network
 
-# Mnemonic
-ETH1_NETWORK_MNEMONIC="hunter lion dog"
+# Mnemonic for the ganache test network
+ETH1_NETWORK_MNEMONIC="cabin scout basic swear scene push grab execute toast country print secret scheme slight cup funny caught ugly clown industry another poverty offer fresh"
 
 # Hardcoded deposit contract based on ETH1_NETWORK_MNEMONIC
-DEPOSIT_CONTRACT_ADDRESS=0x4242424242424242424242424242424242424242
+DEPOSIT_CONTRACT_ADDRESS=8c594691c0e592ffa21f153a16ae41db5befcaaa
 
-GENESIS_FORK_VERSION=0x10000038
+GENESIS_FORK_VERSION=0x42424242
 
-VALIDATOR_COUNT=80
-GENESIS_VALIDATOR_COUNT=80
+VALIDATOR_COUNT=1
+GENESIS_VALIDATOR_COUNT=1
 
 # Number of beacon_node instances that you intend to run
 BN_COUNT=1
 
 # Number of validator clients
-VC_COUNT=64
+VC_COUNT=$BN_COUNT
 
 # Number of seconds to delay to start genesis block.
 # If started by a script this can be 0, if starting by hand
@@ -46,4 +46,4 @@ SECONDS_PER_SLOT=3
 SECONDS_PER_ETH1_BLOCK=1
 
 # Command line arguments for validator client
-VC_ARGS="--suggested-fee-recipient 0x823e40f0ecdbd5d705576ec10e931d004a4ddb66"
+VC_ARGS="--suggested-fee-recipient 0xd9dC96857daD6E570a771E8E8Ef6a94B08E55D9A"
