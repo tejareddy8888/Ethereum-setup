@@ -7,8 +7,6 @@
 [submodule "lighthouse"]
 	path = lighthouse
 	url = https://github.com/sigp/lighthouse.git
-	branch = c547a11b0da48db6fdd03bca2c6ce2448bbcc3a9
 [submodule "go-ethereum"]
 	path = go-ethereum
 	url = https://github.com/ethereum/go-ethereum.git
-	branch = e501b3b05db8e169f67dc78b7b59bc352b3c638dgit 
