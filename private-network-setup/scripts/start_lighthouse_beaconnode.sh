@@ -26,8 +26,7 @@ exec $lighthouse \
     --http-address 0.0.0.0 \
     --http-port $http_port \
     --disable-packet-filter \
-    --target-peers 0 \
-    --terminal-total-difficulty-override=60000000 \
+	--target-peers $((BN_COUNT - 1)) \
     --execution-endpoints http://127.0.0.1:8551/ \
-    --execution-jwt $HOME/.ethereum/UZHETHPOS/geth/jwtsecret \
+    --execution-jwt $GETH_DATADIR/geth/jwtsecret \
     --http-allow-sync-stalled

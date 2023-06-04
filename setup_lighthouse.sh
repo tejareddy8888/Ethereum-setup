@@ -16,7 +16,7 @@ if [ -d "$lighthouse_path" ]; then
     cd $lighthouse_path
     source "$HOME/.cargo/env"
     make
-    echo "create lighthouse alias"
+    make install-lcli
   fi
 else
   echo "$lighthouse_path does not exist, please run the 'make fetch'."

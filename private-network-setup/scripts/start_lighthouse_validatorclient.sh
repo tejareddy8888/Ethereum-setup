@@ -16,5 +16,6 @@ exec $lighthouse \
     --testnet-dir $TESTNET_DIR \
     --init-slashing-protection \
     --beacon-nodes $beacon_nodes \
+    --suggested-fee-recipient $VC_FEE_RECEIPENT
     $VC_ARGS
 
