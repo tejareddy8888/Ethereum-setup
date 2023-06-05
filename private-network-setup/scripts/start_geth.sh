@@ -1,6 +1,6 @@
 #!/bin/bash -i
 
-source /home/ubuntu/vars.env
+source $HOME/Ethereum-setup/private-network-setup/var.env
 
 address=0x35b855e98fd56e5055e39ae6feca999b8dd9235f
 geth=$HOME/Ethereum-setup/go-ethereum/build/bin/geth
@@ -8,7 +8,7 @@ geth=$HOME/Ethereum-setup/go-ethereum/build/bin/geth
 echo $EL_BOOTNODE_ENODE
 
 exec $geth --datadir $GETH_DATADIR \
---networkid 8888 \
+--networkid $CHAIN_ID \
 --http --http.port 8545 --http.api personal,eth,net,web3,engine,debug,txpool \
 --http.addr 0.0.0.0 --http.vhosts "*" --http.corsdomain "*" \
 --ws --ws.addr 0.0.0.0 --ws.port 8546 --ws.origins "*" \

@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-source /home/ubuntu/vars.env
+source $HOME/Ethereum-setup/private-network-setup/var.env
 
 DEBUG_LEVEL=debug
 lighthouse=/home/ubuntu/.cargo/bin/lighthouse

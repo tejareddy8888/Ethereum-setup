@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-source $HOME/vars.env
+source $HOME/Ethereum-setup/private-network-setup/var.env
 
 DEBUG_LEVEL=debug
 lighthouse=$HOME/.cargo/bin/lighthouse
@@ -28,5 +28,4 @@ exec $lighthouse \
     --disable-packet-filter \
 	--target-peers $((BN_COUNT - 1)) \
     --execution-endpoints http://127.0.0.1:8551/ \
-    --execution-jwt $GETH_DATADIR/geth/jwtsecret \
-    --http-allow-sync-stalled
+    --execution-jwt $GETH_DATADIR/geth/jwtsecret 

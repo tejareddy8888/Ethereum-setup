@@ -11,7 +11,7 @@
 set -o nounset -o errexit -o pipefail
 
 source ~/.bashrc
-source /home/ubuntu/vars.env
+source $HOME/Ethereum-setup/private-network-setup/var.env
 
 NOW=`date +%s`
 GENESIS_TIME=`expr $NOW + $GENESIS_DELAY`
@@ -35,7 +35,7 @@ lcli \
 	--ttd $TTD \
 	--eth1-block-hash $ETH1_BLOCK_HASH \
 	--eth1-id $CHAIN_ID \
-	--eth1-follow-distance 10 \
+	--eth1-follow-distance $ETH1_FOLLOW_DISTANCE \
 	--seconds-per-slot $SECONDS_PER_SLOT \
 	--seconds-per-eth1-block $SECONDS_PER_ETH1_BLOCK \
 	--proposer-score-boost "$PROPOSER_SCORE_BOOST" \
