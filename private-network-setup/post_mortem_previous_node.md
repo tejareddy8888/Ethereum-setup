@@ -1,7 +1,6 @@
-As the geth, lighthouse are configured to emit logs on systemctl  they usually fill the var/log/syslog. As the system log are growing immensively 
+As the geth, lighthouse are configured to emit logs on systemctl  they usually fill the var/log/syslog. As the system log are growing immensively. It completely ate up the storage.
 
 ### Steps followed to clear the logs
-
  
 1. Safely clear the logs: after looking at (or backing up) the logs to identify your system's problem, clear them by typing 
 
@@ -113,11 +112,3 @@ sudo vi /var/snap/docker/current/etc/docker/daemon.json
 ```sh
 sudo service docker restart
 ```
-
-If I change the genesis, I can not have S_1
-
-S_1 => T{1,10} ----> S_2
-
-S`_1 =>
-
-T{1,10} -> Signed Transaction which are already submitted in the network.
