@@ -1,6 +1,6 @@
 #!/bin/bash -i
 
-source $HOME/Ethereum-setup/private-network-setup/var.env
+source $HOME/Ethereum-setup/private-network-setup/vars.env
 
 address=0x35b855e98fd56e5055e39ae6feca999b8dd9235f
 geth=$HOME/Ethereum-setup/go-ethereum/build/bin/geth

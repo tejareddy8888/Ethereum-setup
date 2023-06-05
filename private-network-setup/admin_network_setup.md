@@ -1,14 +1,13 @@
 ## 
-
-# Network Setup Documentation
+# User's Network Setup Documentation
 
 Before running this setup, check that your environment have all required software installed as mentioned in the pre-requisites in `prerequisites.md`
 
-The network setup should be starting after completely the
+The network setup should be starting after completely the pre-requisities only.
 
 ## 1. Retreive the entire submodule of the repository
 
-Retrieve all the submodule of the main git repository to setup the entire
+Retrieve all the submodules of the main git repository using the below command:
 
 ```bash
 make fetch
@@ -18,26 +17,22 @@ make fetch
 
 ### Install Geth
 
-1. You can obtain the installation script using wget:
-
-    `git clone "https://****/uzh-pos"`
-
-2. Then run:
+1. To install the Geth from the go-ethereum submodule fetched, run command:
 
     ```bash
     make setup-geth
     ```
 
-3. You now have a local installation of geth which you can run with geth, try it with:
+2. You now have a local installation of geth which you can run with geth, try it with:
 
     ```bash
     geth version
     ```
 
-4. if it does not work, please source your `bashrc` or `zshrc` using:
+3. if it does not work, please source your `bashrc` or `zshrc` using:
 ```source ~/.bashrc``` or ```source ~/.zshrc```
 
-5. It should provide an output like below:
+4. It should provide an output like below:
 
     ```
     Geth
@@ -55,34 +50,38 @@ make fetch
 
 ### Install Lighthouse
 
-1. You can obtain the installation script using wget:
-
-    `git clone "https://****/uzh-pos"`
-
-2. Then run:
+1.  To install the lighthouse from the lighthouse submodule fetched, run command:
 
     ```bash
     make setup-lighthouse
     ```
 
-3. You now have a local installation of geth which you can run with lighthouse, try it with:
+2. You now have a local installation of geth which you can run with lighthouse, try it with:
 
     ```bash
     lighthouse --version
     ```
 
-4. if it does not work, please source your `bashrc` or `zshrc` using:
+3. if it does not work, please source your `bashrc` or `zshrc` using:
 ```source ~/.bashrc``` or ```source ~/.zshrc```
 
-5. It should provide an output like below:
+4. It should provide an output like below:
 
     ```
-    Lighthouse v4.0.1-1f44c51+
+    Lighthouse v4.2.0-
     BLS library: blst
     SHA256 hardware acceleration: false
     Allocator: jemalloc
     Specs: mainnet (true), minimal (false), gnosis (false)
     ```
+
+## 4. Make sure the variables in the vars.env are set propoerly.
+
+Check the Mnemonics
+
+Check the EL_BOOTNODE_ENODE
+
+Check the EL_BOOTNODE_PRIV_KEY
 
 ## 4. Create and Initialize Lighthouse and GETH with genesis block
 
@@ -146,7 +145,7 @@ chmod +x ./start_lighthouse_beacon_node.sh
 or run below
 
 ```bash
-source $HOME/Ethereum-setup/private-network-setup/var.env
+source $HOME/Ethereum-setup/private-network-setup/vars.env
 lighthouse \
     --debug-level $DEBUG_LEVEL \
     bn \
@@ -184,7 +183,7 @@ chmod +x ./start_lighthouse_validator_client.sh
 or run below
 
 ```bash
-source $HOME/Ethereum-setup/private-network-setup/var.env
+source $HOME/Ethereum-setup/private-network-setup/vars.env
 lighthouse \
     --debug-level $DEBUG_LEVEL \
     vc \

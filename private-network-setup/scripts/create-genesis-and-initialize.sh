@@ -11,7 +11,7 @@
 set -o nounset -o errexit -o pipefail
 
 source ~/.bashrc
-source $HOME/Ethereum-setup/private-network-setup/var.env
+source $HOME/Ethereum-setup/private-network-setup/vars.env
 
 NOW=`date +%s`
 GENESIS_TIME=`expr $NOW + $GENESIS_DELAY`
