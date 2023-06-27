@@ -6,26 +6,25 @@ DEBUG_LEVEL=debug
 lighthouse=$HOME/.cargo/bin/lighthouse
 
 # start beacon node 
-data_dir=$DATADIR/node_1
-network_port=9001
-http_port=8001
 
-exec $lighthouse \
-    --debug-level $DEBUG_LEVEL \
-    bn \
-    --subscribe-all-subnets \
-    --datadir $data_dir \
-    --testnet-dir $TESTNET_DIR \
-    --enable-private-discovery \
-    --disable-peer-scoring \
-    --staking \
-    --enr-address 127.0.0.1 \
-    --enr-udp-port $network_port \
-    --enr-tcp-port $network_port \
-    --port $network_port \
-    --http-address 0.0.0.0 \
-    --http-port $http_port \
-    --disable-packet-filter \
-	--target-peers $((BN_COUNT - 1)) \
-    --execution-endpoints http://127.0.0.1:8551/ \
-    --execution-jwt $GETH_DATADIR/geth/jwtsecret 
+for (( bn=1; bn<=$BN_COUNT; bn++ )); do
+    exec $lighthouse \
+        --debug-level $DEBUG_LEVEL \
+        bn \
+        --subscribe-all-subnets \
+        --datadir $DATADIR/node_$bn \
+        --testnet-dir $TESTNET_DIR \
+        --enable-private-discovery \
+        --disable-peer-scoring \
+        --staking \
+        --enr-address 127.0.0.1 \
+        --enr-udp-port  $((LIGHTHOUSE_NETWORK_PORT + $bn)) \
+        --enr-tcp-port  $((LIGHTHOUSE_NETWORK_PORT + $bn)) \
+        --port $((LIGHTHOUSE_NETWORK_PORT + $bn)) \
+        --http-address 0.0.0.0 \
+        --http-port $((LIGHTHOUSE_HTTP_PORT + $bn)) \
+        --disable-packet-filter \
+        --target-peers $((BN_COUNT - 1)) \
+        --execution-endpoints http://127.0.0.1:$((GETH_AUTH_PORT + $bn)) \
+        --execution-jwt $GETH_DATADIR/geth_datadir$el/geth/jwtsecret >> ./lighthouse_beacon_$bn.log &
+done

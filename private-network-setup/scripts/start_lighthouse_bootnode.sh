@@ -7,7 +7,7 @@
 
 set -Eeuo pipefail
 
-source ./vars.env
+source $HOME/Ethereum-setup/private-network-setup/vars.env
 lighthouse=/home/ubuntu/.cargo/bin/lighthouse
 
 echo "Generating bootnode enr"
