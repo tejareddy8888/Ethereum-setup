@@ -1,6 +1,6 @@
 #!/bin/bash
 
-lighthouse_path="./lighthouse"
+lighthouse_path="$HOME/Ethereum-setup/lighthouse"
 
 echo "************ STARTING LIGHTHOUSE SETUP ************"
 

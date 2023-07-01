@@ -3,7 +3,7 @@
 source $HOME/Ethereum-setup/private-network-setup/vars.env
 
 DEBUG_LEVEL=info
-lighthouse=/home/ubuntu/.cargo/bin/lighthouse
+lighthouse=$HOME/.cargo/bin/lighthouse
 
 # start boot node
 exec $lighthouse boot_node \
