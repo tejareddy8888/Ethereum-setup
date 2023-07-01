@@ -21,6 +21,7 @@ while getopts "d:h" flag; do
        echo "  HTTP-PORT     Value for --http.port"
        echo "  AUTH-PORT     Value for --authrpc.port"
        echo "  WS-PORT       Value for --ws.port"
+       echo "  Genesis-File  Value for genesis_file"
        exit
        ;;
   esac
@@ -32,7 +33,20 @@ network_port=${@:$OPTIND+1:1}
 http_port=${@:$OPTIND+2:1}
 auth_port=${@:$OPTIND+3:1}
 ws_port=${@:$OPTIND+4:1}
+genesis_file=${@:$OPTIND+5:1}
 
+echo "$DEBUG_LEVEL"
+echo " data direcetory: $data_dir "
+echo " websocket port: $ws_port "
+echo " http port: $http_port "
+echo " auth port: $auth_port "
+echo " network port: $network_port "
+
+$geth init \
+    --datadir $data_dir \
+    $genesis_file
+
+echo "Completed init the geth node"
 
 exec $geth --datadir $data_dir \
 --networkid $CHAIN_ID \
@@ -43,5 +57,5 @@ exec $geth --datadir $data_dir \
 --port $network_port \
 --authrpc.jwtsecret $data_dir/geth/jwtsecret \
 --authrpc.addr localhost --authrpc.port $auth_port --authrpc.vhosts localhost \
---syncmode "full" --gcmode "archive"
+--syncmode "full" --gcmode "archive" &
 

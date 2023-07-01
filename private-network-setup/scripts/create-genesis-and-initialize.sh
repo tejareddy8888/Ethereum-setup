@@ -16,8 +16,6 @@ source $HOME/Ethereum-setup/private-network-setup/vars.env
 NOW=`date +%s`
 GENESIS_TIME=`expr $NOW + $GENESIS_DELAY`
 
-geth=$HOME/Ethereum-setup/go-ethereum/build/bin/geth
-
 genesis_file=${@:$OPTIND+0:1}
 
 lcli \
@@ -60,8 +58,5 @@ echo $GENESIS_TIME
 CAPELLA_TIME=$((GENESIS_TIME + (CAPELLA_FORK_EPOCH * 32 * SECONDS_PER_SLOT)))
 echo $CAPELLA_TIME
 sed -i 's/"shanghaiTime".*$/"shanghaiTime": '"$CAPELLA_TIME"'/g' $genesis_file
-cat $genesis_file
 
-exec $geth init \
-    --datadir $GETH_DATADIR \
-    $genesis_file
+echo "updated the genesis file at $genesis_file"
