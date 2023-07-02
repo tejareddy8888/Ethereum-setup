@@ -8,4 +8,4 @@
 [submodule "go-ethereum"]
 	path = go-ethereum
 	url = https://github.com/ethereum/go-ethereum.git
-	branch = e501b3b05db8e169f67dc78b7b59bc352b3c638dgit 
+	branch = e501b3b05db8e169f67dc78b7b59bc352b3c638d
