@@ -23,8 +23,8 @@ if [ -d "$geth_path" ]; then
     cd go-ethereum
     
     make all
-    echo "alias geth='$SCRIPTPATH/go-ethereum/build/bin/geth'" >> $shell_profile
-    echo "alias el_bootnode='$SCRIPTPATH/go-ethereum/build/bin/bootnode'" >> $shell_profile
+    echo "alias geth='$geth_path/build/bin/geth'" >> $shell_profile
+    echo "alias el_bootnode='$geth_path/build/bin/bootnode'" >> $shell_profile
 
     source $shell_profile
   fi
