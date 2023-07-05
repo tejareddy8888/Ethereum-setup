@@ -13,6 +13,9 @@ for (( vc=1; vc<=$VC_COUNT; vc++ )); do
     touch $LOG_DIR/validator_node_$vc.log
 done
 
+echo "starting geth bootnode"
+exec $HOME/Ethereum-setup/go-ethereum/build/bin/bootnode --nodekey ~/.bootnode_prik.txt & &>> $LOG_DIR/el_bootnode.log
+
 echo "starting lighthouse bootnode"
 $HOME/Ethereum-setup/private-network-setup/scripts/start_lighthouse_bootnode.sh  &>>  $LOG_DIR/bootnode.log  
 sleep 5
